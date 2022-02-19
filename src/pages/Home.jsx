@@ -1,11 +1,7 @@
 import React from "react";
-import LoginComponents from "../components/LoginComponents";
+
 const Home = () => {
-  return (
-    <div>
-      <LoginComponents />
-    </div>
-  );
+  return <div>Home</div>;
 };
 
 export default Home;
