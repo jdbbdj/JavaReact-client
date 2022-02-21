@@ -26,7 +26,7 @@ const LoginComponents = () => {
     ) {
       setSnackBarStatus(true);
       setHasLogin(true);
-      navigate("/home");
+      navigate(`/home/${initialValues.username}`);
     } else {
       setSnackBarStatus(true);
       setHasLogin(false);

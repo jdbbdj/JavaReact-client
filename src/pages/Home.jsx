@@ -1,7 +1,11 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import TodoComponent from "../components/TodoComponent";
 
-const Home = () => {
-  return <div>Home</div>;
+const Home = ({ ...props }) => {
+  const { name } = useParams();
+
+  return <TodoComponent name={name} />;
 };
 
 export default Home;
