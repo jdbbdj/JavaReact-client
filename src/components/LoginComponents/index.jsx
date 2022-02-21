@@ -5,8 +5,13 @@ import "./LoginComponents.css";
 import INITIAL_VALUES from "./initialValues";
 import { useNavigate } from "react-router-dom";
 import SnackBar from "../../commons/SnackBar";
+import { Auth as AuthService } from "../../utils/auth";
+
+import { useDispatch } from "react-redux";
+import { credibilityUpdate } from "../../redux/actions/UserActions";
 
 const LoginComponents = () => {
+  const dispatch = useDispatch();
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const [snackBarStatus, setSnackBarStatus] = useState(false);
   const [hasLogin, setHasLogin] = useState(false);
@@ -24,8 +29,10 @@ const LoginComponents = () => {
       initialValues.username === "james" &&
       initialValues.password === "test"
     ) {
+      AuthService(initialValues);
       setSnackBarStatus(true);
       setHasLogin(true);
+      dispatch(credibilityUpdate());
       navigate(`/home/${initialValues.username}`);
     } else {
       setSnackBarStatus(true);
