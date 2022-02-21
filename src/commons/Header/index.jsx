@@ -37,7 +37,11 @@ const Header = () => {
             </MenuItem>
           </ul>
           <ul className="navbar-nav navbar-collapse justify-content-end">
-            {!userDetailsCred && <MenuItem>Login</MenuItem>}
+            {!userDetailsCred && (
+              <MenuItem component={Link} to={"/"} className="navbar-link px-2">
+                Login
+              </MenuItem>
+            )}
             {userDetailsCred && (
               <MenuItem onClick={AuthRemoveState}>Logout</MenuItem>
             )}

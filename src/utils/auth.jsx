@@ -1,6 +1,3 @@
-import { useDispatch } from "react-redux";
-import { inversecredibilityUpdate } from "../redux/actions/UserActions";
-
 const Auth = (credentials) => {
   RegisterSuccessfulLogin(credentials.username);
 };
