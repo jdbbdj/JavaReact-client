@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHead,
@@ -8,14 +8,20 @@ import {
   Container,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { fetchUsername } from "../../redux/actions/UserActions";
+import { useDispatch } from "react-redux";
 
 import { todo_sampledata } from "../../utils/data";
 
 const TodoComponent = ({ name }) => {
+  const dispatch = useDispatch();
   const SAMPLE_DATA = todo_sampledata;
 
   const [todoData, setTodoData] = useState(SAMPLE_DATA);
 
+  useEffect(() => {
+    dispatch(fetchUsername());
+  }, []);
   return (
     <div>
       <div>
