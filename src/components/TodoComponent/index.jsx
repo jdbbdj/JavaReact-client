@@ -9,18 +9,19 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { fetchUsername } from "../../redux/actions/UserActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { todo_sampledata } from "../../utils/data";
 
 const TodoComponent = ({ name }) => {
   const dispatch = useDispatch();
   const SAMPLE_DATA = todo_sampledata;
+  const userName = useSelector((state) => state.userReducers.name);
 
   const [todoData, setTodoData] = useState(SAMPLE_DATA);
 
   useEffect(() => {
-    dispatch(fetchUsername());
+    dispatch(fetchUsername(userName));
   }, []);
   return (
     <div>
@@ -30,8 +31,8 @@ const TodoComponent = ({ name }) => {
             <TableHead>
               <TableRow>
                 <TableCell style={{ border: "1px solid black" }} colSpan={4}>
-                  {name} ToDo List Table. You can go back to our homepage{" "}
-                  <Link to="/">here</Link>
+                  {userName} here is your ToDo List Table. You can go back to
+                  our homepage <Link to="/">here</Link>
                 </TableCell>
               </TableRow>
               <TableRow>

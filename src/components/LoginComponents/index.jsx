@@ -32,7 +32,7 @@ const LoginComponents = () => {
       AuthService(initialValues);
       setSnackBarStatus(true);
       setHasLogin(true);
-      dispatch(credibilityUpdate());
+      dispatch(credibilityUpdate(initialValues.username));
       navigate(`/home/${initialValues.username}`);
     } else {
       setSnackBarStatus(true);
