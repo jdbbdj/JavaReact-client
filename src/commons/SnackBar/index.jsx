@@ -2,7 +2,7 @@ import React from "react";
 import Alert from "@material-ui/lab/Alert";
 import { Snackbar } from "@material-ui/core";
 
-const SnackBar = ({ hasLogin, snackBarStatus }) => {
+const SnackBar = ({ hasLogin, snackBarStatus, hasMessage }) => {
   return (
     <Snackbar severity="error" open={snackBarStatus}>
       {hasLogin ? (
@@ -11,7 +11,7 @@ const SnackBar = ({ hasLogin, snackBarStatus }) => {
         </Alert>
       ) : (
         <Alert severity="error" sx={{ width: "100%" }}>
-          Error
+          {hasMessage}
         </Alert>
       )}
     </Snackbar>

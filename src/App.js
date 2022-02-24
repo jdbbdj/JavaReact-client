@@ -16,11 +16,19 @@ import withParams from "./commons/withParams.jsx";
 import Header from "./commons/Header";
 import Footer from "./commons/Footer";
 import Logout from "./commons/Logout";
+import SnackBar from "./commons/SnackBar";
 /* import AuthenticatedRoute from "./commons/AuthenticatedRoute"; */
 import { Auth as AuthChecker } from "./utils/auth";
+import { useSelector } from "react-redux";
 
 function App() {
   const HomeParams = withParams(Home);
+  const snackBarStatus = useSelector((state) => state.snackBarReducer.success);
+
+  const hasLogin = useSelector((state) => state.snackBarReducer.hasLogin);
+
+  const hasMessage = useSelector((state) => state.snackBarReducer.message);
+
   return (
     <div className="App">
       <Router>
@@ -40,6 +48,11 @@ function App() {
           )}
           <Route path="*" element={<InvalidUrl />} />
         </Routes>
+        <SnackBar
+          hasLogin={hasLogin}
+          snackBarStatus={snackBarStatus}
+          hasMessage={hasMessage}
+        />
         <Footer />
       </Router>
     </div>

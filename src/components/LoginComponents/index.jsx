@@ -4,17 +4,21 @@ import AlertTitle from "@material-ui/lab/AlertTitle";
 import "./LoginComponents.css";
 import INITIAL_VALUES from "./initialValues";
 import { useNavigate } from "react-router-dom";
-import SnackBar from "../../commons/SnackBar";
+
 import { Auth as AuthService } from "../../utils/auth";
 
 import { useDispatch } from "react-redux";
 import { credibilityUpdate } from "../../redux/actions/UserActions";
+import {
+  snackBarSuccess,
+  snackBarFailed,
+  snackBarFailedMessage,
+} from "../../redux/actions/snackBarAction";
 
 const LoginComponents = () => {
   const dispatch = useDispatch();
+
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
-  const [snackBarStatus, setSnackBarStatus] = useState(false);
-  const [hasLogin, setHasLogin] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -30,13 +34,11 @@ const LoginComponents = () => {
       initialValues.password === "test"
     ) {
       AuthService(initialValues);
-      setSnackBarStatus(true);
-      setHasLogin(true);
+      dispatch(snackBarSuccess());
       dispatch(credibilityUpdate(initialValues.username));
       navigate(`/home/${initialValues.username}`);
     } else {
-      setSnackBarStatus(true);
-      setHasLogin(false);
+      dispatch(snackBarFailedMessage("Invalid Credentials"));
     }
   };
 
@@ -65,7 +67,6 @@ const LoginComponents = () => {
           <Button onClick={loginClick}>Login</Button>
         </div>
       </form>
-      <SnackBar hasLogin={hasLogin} snackBarStatus={snackBarStatus} />
     </Container>
   );
 };
