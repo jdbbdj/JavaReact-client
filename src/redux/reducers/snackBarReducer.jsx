@@ -1,27 +1,37 @@
 import {
-  SNACKBAR_SUCCESS,
-  SNACKBAR_FAILED,
-  SNACKBAR_FAILED_MESSAGE,
+  SNACKBAR_SHOW_SUCCESS,
+  SNACKBAR_SHOW_FAIL,
+  SNACKBAR_CLEAR,
 } from "../actionTypes/snackBarActionTypes";
 
+import { TYPE_START, TYPE_FAIL, TYPE_SUCCESS } from "../../utils/api";
+
 const initialState = {
-  success: false,
-  hasLogin: false,
+  show: false,
+  error: false,
   message: "",
 };
 
 const snackBarReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SNACKBAR_SUCCESS:
-      return { ...state, success: true, hasLogin: true };
-    case SNACKBAR_FAILED:
-      return { ...state, success: true, hasLogin: false };
-    case SNACKBAR_FAILED_MESSAGE:
+    case SNACKBAR_SHOW_FAIL:
       return {
         ...state,
-        success: true,
-        hasLogin: false,
+        show: true,
+        error: true,
         message: action.payload,
+      };
+    case SNACKBAR_SHOW_SUCCESS:
+      return {
+        ...state,
+        show: true,
+        error: false,
+        message: action.payload,
+      };
+    case SNACKBAR_CLEAR:
+      return {
+        ...state,
+        show: false,
       };
     default:
       return state;

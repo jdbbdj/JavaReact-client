@@ -1,5 +1,4 @@
 import axios from "axios";
-import { snackBarFailedMessage } from "./snackBarAction";
 import { useDispatch } from "react-redux";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -23,13 +22,11 @@ export const fetchUsername = (userEndpoint) => async (dispatch) => {
     const res = await axios.get(`http://localhost:8080/home/${userEndpoint}`);
     dispatch({
       type: "USER_ACCESSNAME",
-      payload: res.data.message,
+      payload: res.data,
     });
   } catch (e) {
-    handleErr(e, dispatch);
+    console.log(e.response.data.message);
   }
 };
 
-const handleErr = (err, dispatch) => {
-  dispatch(snackBarFailedMessage(err.response.data.message));
-};
+const handleErr = (err, dispatch) => {};

@@ -23,9 +23,9 @@ import { useSelector } from "react-redux";
 
 function App() {
   const HomeParams = withParams(Home);
-  const snackBarStatus = useSelector((state) => state.snackBarReducer.success);
+  const snackBarStatus = useSelector((state) => state.snackBarReducer.show);
 
-  const hasLogin = useSelector((state) => state.snackBarReducer.hasLogin);
+  const errorChecker = useSelector((state) => state.snackBarReducer.error);
 
   const hasMessage = useSelector((state) => state.snackBarReducer.message);
 
@@ -49,7 +49,7 @@ function App() {
           <Route path="*" element={<InvalidUrl />} />
         </Routes>
         <SnackBar
-          hasLogin={hasLogin}
+          errorChecker={errorChecker}
           snackBarStatus={snackBarStatus}
           hasMessage={hasMessage}
         />

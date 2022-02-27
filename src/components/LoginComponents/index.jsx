@@ -6,14 +6,16 @@ import INITIAL_VALUES from "./initialValues";
 import { useNavigate } from "react-router-dom";
 
 import { Auth as AuthService } from "../../utils/auth";
-
+import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { credibilityUpdate } from "../../redux/actions/UserActions";
 import {
-  snackBarSuccess,
-  snackBarFailed,
-  snackBarFailedMessage,
+  snackBarSuccessShowCall,
+  snackBarFailShowCall,
 } from "../../redux/actions/snackBarAction";
+import { fetchUsername } from "../../redux/actions/UserActions";
+import loginValidator from "./loginValidator";
+import { Label } from "@material-ui/icons";
 
 const LoginComponents = () => {
   const dispatch = useDispatch();
@@ -21,50 +23,69 @@ const LoginComponents = () => {
   const [initialValues, setInitialValues] = useState(INITIAL_VALUES);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  const handleOnChange = (e, id) => {
     // create the new state and set it
-    setInitialValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-
-    e.preventDefault();
+    let setEvent;
+    setEvent = e?.target.value;
+    setInitialValues((prev) => ({
+      ...prev,
+      [id]: setEvent,
+    }));
   };
 
-  const loginClick = () => {
-    if (
-      initialValues.username === "james" &&
-      initialValues.password === "test"
-    ) {
+  const loginClick = (values) => {
+    if (values.username === "james" && values.password === "test") {
       AuthService(initialValues);
-      dispatch(snackBarSuccess());
       dispatch(credibilityUpdate(initialValues.username));
+      dispatch(fetchUsername(initialValues.username));
+      dispatch(snackBarSuccessShowCall("Success"));
       navigate(`/home/${initialValues.username}`);
     } else {
-      dispatch(snackBarFailedMessage("Invalid Credentials"));
+      dispatch(snackBarFailShowCall("Invalid Credentials"));
     }
   };
 
+  const formik = useFormik({
+    initialValues: initialValues,
+    validateOnChange: true,
+    validationSchema: loginValidator,
+    onSubmit: loginClick,
+  });
+
+  const { values, handleChange, handleSubmit, errors, touched, getFieldProps } =
+    formik;
+
   return (
-    <Container className="loginCont">
+    <Container className="loginCont" onSubmit={handleSubmit}>
       <form className="loginForm">
         <div>
           <label>Username</label>
           <TextField
             type="text"
             name="username"
-            value={initialValues.username}
-            onChange={handleChange}
+            id="username"
+            {...getFieldProps("username")}
           />
+          {touched.username && errors.username ? (
+            <div style={{ color: "red" }}>{errors.username}</div>
+          ) : null}
         </div>
         <div>
           <label>Password</label>
           <TextField
             type="password"
             name="password"
-            value={initialValues.password}
-            onChange={handleChange}
+            id="password"
+            {...getFieldProps("password")}
           />
+          {touched.password && errors.password ? (
+            <div style={{ color: "red" }}>{errors.password}</div>
+          ) : null}
         </div>
         <div>
-          <Button onClick={loginClick}>Login</Button>
+          <Button onClick={loginClick} type="submit">
+            Login
+          </Button>
         </div>
       </form>
     </Container>

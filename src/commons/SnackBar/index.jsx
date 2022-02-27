@@ -1,19 +1,29 @@
 import React from "react";
 import Alert from "@material-ui/lab/Alert";
-import { Snackbar } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { Snackbar, Button, IconButton } from "@material-ui/core";
+import {
+  snackBarShowCall,
+  snackBarHideCall,
+} from "../../redux/actions/snackBarAction";
 
-const SnackBar = ({ hasLogin, snackBarStatus, hasMessage }) => {
+const SnackBar = ({ errorChecker, snackBarStatus, hasMessage }) => {
+  const dispatch = useDispatch();
+  const handleClose = () => {
+    dispatch(snackBarHideCall());
+  };
+
   return (
-    <Snackbar severity="error" open={snackBarStatus}>
-      {hasLogin ? (
-        <Alert severity="success" sx={{ width: "100%" }}>
-          Success
-        </Alert>
-      ) : (
-        <Alert severity="error" sx={{ width: "100%" }}>
-          {hasMessage}
-        </Alert>
-      )}
+    <Snackbar
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      open={snackBarStatus}
+    >
+      <Alert
+        onClose={handleClose}
+        severity={errorChecker ? "error" : "success"}
+      >
+        {hasMessage}
+      </Alert>
     </Snackbar>
   );
 };

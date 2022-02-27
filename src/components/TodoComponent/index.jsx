@@ -8,21 +8,23 @@ import {
   Container,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { fetchUsername } from "../../redux/actions/UserActions";
+
 import { useDispatch, useSelector } from "react-redux";
 
 import { todo_sampledata } from "../../utils/data";
 
 const TodoComponent = ({ name }) => {
   const dispatch = useDispatch();
-  const SAMPLE_DATA = todo_sampledata;
+  const data = useSelector((state) => state.userReducers.logs);
   const userName = useSelector((state) => state.userReducers.name);
+  const [todoList, setTodoList] = useState(data);
 
-  const [todoData, setTodoData] = useState(SAMPLE_DATA);
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    dispatch(fetchUsername(userName));
-  }, []);
+    setTodoList(todoList);
+  }, [todoList]);
+
   return (
     <div>
       <div>
@@ -48,7 +50,7 @@ const TodoComponent = ({ name }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {todoData.map((tasklet) => (
+              {data.map((tasklet) => (
                 <TableRow key={tasklet.id}>
                   <TableCell
                     style={{
@@ -59,9 +61,7 @@ const TodoComponent = ({ name }) => {
                     {tasklet.id}
                   </TableCell>
                   <TableCell colSpan={2}>{tasklet.description}</TableCell>
-                  <TableCell colSpan={1}>
-                    {tasklet.targetDate.toString()}
-                  </TableCell>
+                  <TableCell colSpan={1}>{Date(tasklet.targetdate)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
