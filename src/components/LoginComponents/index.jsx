@@ -37,7 +37,6 @@ const LoginComponents = () => {
     if (values.username === "james" && values.password === "test") {
       AuthService(initialValues);
       dispatch(credibilityUpdate(initialValues.username));
-      dispatch(fetchUsername(initialValues.username));
       dispatch(snackBarSuccessShowCall("Success"));
       navigate(`/home/${initialValues.username}`);
     } else {
