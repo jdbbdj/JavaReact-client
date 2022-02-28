@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { fetchUsername } from "../../redux/actions/UserActions";
 import { useDispatch, useSelector } from "react-redux";
 import ActionComponents from "../ActionComponents";
-
+import { testAction } from "../../redux/actions/UserActions";
 import { todo_sampledata } from "../../utils/data";
 
 const TodoComponent = ({ name }) => {
@@ -45,12 +45,21 @@ const TodoComponent = ({ name }) => {
     setOpen(false);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setTodoList(data);
+    console.log("YES2");
+  }, [data]);
 
   useEffect(() => {
-    setTodoList(dispatch(fetchUsername(userName)));
+    dispatch(fetchUsername(userName));
     console.log("YES1");
   }, []);
+
+  const handleGenerate = () => {
+    const newLogs = [todo_sampledata, ...todoList];
+    console.log(newLogs);
+    dispatch(testAction());
+  };
 
   return (
     <div>
@@ -62,7 +71,7 @@ const TodoComponent = ({ name }) => {
                 <TableCell style={{ border: "1px solid black" }} colSpan={5}>
                   {userName} here is your ToDo List Table. You can go back to
                   our homepage <Link to="/">here</Link>
-                  <Button onClick={handleOpen}>Add Task Here</Button>
+                  <Button onClick={handleGenerate}>Add Task Here</Button>
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -81,7 +90,7 @@ const TodoComponent = ({ name }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((tasklet) => (
+              {todoList.map((tasklet) => (
                 <TableRow key={tasklet.id}>
                   <TableCell
                     style={{

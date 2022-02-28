@@ -22,7 +22,7 @@ const CustomBox = withStyles((theme) => ({
 
 const ActionComponents = () => {
   return (
-    <CustomBox container spacing={3}>
+    <CustomBox spacing={3}>
       <CustomGrid>
         <ViewListIcon />
       </CustomGrid>

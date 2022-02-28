@@ -29,4 +29,8 @@ export const fetchUsername = (userEndpoint) => async (dispatch) => {
   }
 };
 
+export function testAction() {
+  return { type: "USER_LOGS_DELETE" };
+}
+
 const handleErr = (err, dispatch) => {};

@@ -12,6 +12,8 @@ const userReducers = (state = initialState, action) => {
       return { ...state, credible: false };
     case "USER_ACCESSNAME":
       return { ...state, logs: action.payload };
+    case "USER_LOGS_DELETE":
+      return { ...state, logs: [] };
     default:
       return state;
   }
