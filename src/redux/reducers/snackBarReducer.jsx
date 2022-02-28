@@ -32,6 +32,7 @@ const snackBarReducer = (state = initialState, action) => {
       return {
         ...state,
         show: false,
+        message: "",
       };
     default:
       return state;

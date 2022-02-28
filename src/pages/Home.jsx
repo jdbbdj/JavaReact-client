@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import TodoComponent from "../components/TodoComponent";
 
 const Home = ({ ...props }) => {
   const { name } = useParams();
+  const [test, setTest] = useState(true);
 
-  return <TodoComponent name={name} />;
+  const handleClick = () => {
+    setTest(false);
+  };
+
+  return <TodoComponent />;
 };
 
 export default Home;

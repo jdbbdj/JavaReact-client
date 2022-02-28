@@ -20,7 +20,7 @@ export const snackBarFailShowCall = (message) => (dispatch) => {
   }
 };
 
-export const snackBarHideCall = () => (dispatch) => {
+export const snackBarHideCall = (event) => (dispatch) => {
   try {
     dispatch({
       type: "SNACKBAR_CLEAR",
