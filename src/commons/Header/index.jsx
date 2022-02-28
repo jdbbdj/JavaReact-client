@@ -5,14 +5,17 @@ import { MenuItem } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { AuthRemove } from "../../utils/auth";
 import { inversecredibilityUpdate } from "../../redux/actions/UserActions";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userDetailsCred = useSelector((state) => state.userReducers.credible);
 
   const AuthRemoveState = () => {
     AuthRemove();
     dispatch(inversecredibilityUpdate());
+    navigate("/");
   };
 
   return (

@@ -2,23 +2,25 @@ import React, { useEffect, useState } from "react";
 import { Modal, Box, Typography } from "@material-ui/core";
 import { fetchUsername } from "../../redux/actions/UserActions";
 import { useDispatch, useSelector } from "react-redux";
-
-import { testAction } from "../../redux/actions/UserActions";
 import { todo_sampledata } from "../../utils/data";
 import { userLogsSelector } from "../../redux/selectors/UserSelector";
 import Todos from "../Todos";
-import axios from "axios";
+import TodoListForm from "../../commons/TodoListForm";
 
 const TodoComponent = () => {
   const dispatch = useDispatch();
   const logs = useSelector(userLogsSelector());
   const userName = useSelector((state) => state.userReducers.name);
+  const modalStatus = useSelector((state) => state.modalReducer.open);
   const [todoList, setTodoList] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(modalStatus);
+  const [modal, setModal] = useState({
+    generate: false,
+    deleteReport: false,
+    processing: false,
+  });
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const handleOpen = () => {};
 
   const styledBox = {
     position: "absolute",
@@ -32,12 +34,23 @@ const TodoComponent = () => {
     p: 4,
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const toggleModal = (id, value) => {
+    setModal((prev) => ({
+      ...prev,
+      [id]: value,
+    }));
+  };
+
+  const handleClose = () => {};
+
+  const handleOpenModal = () => {
+    toggleModal("generate", true);
   };
 
   const handleGenerate = () => {
-    dispatch(testAction());
+    handleOpen();
+    const newReport = [todo_sampledata, ...todoList];
+    setTodoList(newReport);
   };
 
   useEffect(() => {
@@ -48,30 +61,25 @@ const TodoComponent = () => {
     setTodoList(logs);
   }, [logs]);
 
-  console.log(todoList);
+  console.log(modal);
+
+  const { generate, deleteReport, processing } = modal;
 
   return (
     <div>
       <div>
         <Todos
-          handleGenerate={handleGenerate}
+          handleGenerate={handleOpenModal}
           userName={userName}
           todoList={todoList}
         />
         <Modal
-          open={open}
+          open={generate}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={styledBox}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
-          </Box>
+          <TodoListForm open={generate} />
         </Modal>
       </div>
     </div>
