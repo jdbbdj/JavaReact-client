@@ -35,13 +35,6 @@ export const fetchUsername = (userEndpoint) => async (dispatch) => {
   );
 };
 
-export const testAction = (newLogs) => async (dispatch) => {
-  dispatch({
-    type: "LOGS_APPEND",
-    payload: newLogs,
-  });
-};
-
 export const logDelete = (userEndpoint, logId) => async (dispatch) => {
   try {
     const res = await axios.delete(`${BASE_URL}/home/${userEndpoint}/${logId}`);
@@ -55,4 +48,14 @@ export const logDelete = (userEndpoint, logId) => async (dispatch) => {
   }
 };
 
-const handleErr = (err, dispatch) => {};
+export const logsUpdate = (logs) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "LOGS_UPDATE",
+      payload: logs,
+    });
+    dispatch(snackBarSuccessShowCall("Update Successfully"));
+  } catch (e) {
+    dispatch(snackBarFailShowCall(e));
+  }
+};

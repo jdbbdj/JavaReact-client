@@ -13,9 +13,7 @@ import {
   snackBarSuccessShowCall,
   snackBarFailShowCall,
 } from "../../redux/actions/snackBarAction";
-import { fetchUsername } from "../../redux/actions/UserActions";
 import loginValidator from "./loginValidator";
-import { Label } from "@material-ui/icons";
 
 const LoginComponents = () => {
   const dispatch = useDispatch();

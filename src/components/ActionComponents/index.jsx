@@ -34,7 +34,13 @@ const CustomBox = withStyles((theme) => ({
   },
 }))(Box);
 
-const ActionComponents = ({ tasklet }) => {
+const ActionComponents = ({
+  tasklet,
+  todoList,
+  userName,
+  toggleModal,
+  modal,
+}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducers.name);
   const { targetdate, description, id, date } = tasklet;
@@ -42,13 +48,19 @@ const ActionComponents = ({ tasklet }) => {
   const handleDelete = (logId) => {
     dispatch(logDelete(user, logId));
   };
+
+  const editTask = (tasklet) => {
+    toggleModal("generate", true);
+    toggleModal("edit", true);
+    toggleModal("modalData", tasklet);
+  };
   return (
     <CustomBox spacing={3}>
       <CustomGrid>
         <ViewListIcon className="actionIcons disabled" />
       </CustomGrid>
       <CustomGrid>
-        <EditIcon className="actionIcons" />
+        <EditIcon onClick={(e) => editTask(tasklet)} className="actionIcons" />
       </CustomGrid>
       <CustomGrid>
         <DeleteIcon onClick={(e) => handleDelete(id)} className="actionIcons" />

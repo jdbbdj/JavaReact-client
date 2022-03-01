@@ -8,8 +8,11 @@ import {
   Button,
 } from "@material-ui/core";
 import ActionComponents from "../ActionComponents";
+import { dateFormatter, dayFormatter } from "../../utils/helper";
 
-const Todos = ({ handleGenerate, todoList, userName }) => {
+const Todos = ({ handleGenerate, todoList, userName, toggleModal, modal }) => {
+  const { generate, deleteReport, processing, edit } = modal;
+
   return (
     <Container>
       <Table style={{ border: "1px solid black" }}>
@@ -49,9 +52,17 @@ const Todos = ({ handleGenerate, todoList, userName }) => {
                   {tasklet.id}
                 </TableCell>
                 <TableCell colSpan={2}>{tasklet.description}</TableCell>
-                <TableCell colSpan={1}>{Date(tasklet.targetdate)}</TableCell>
                 <TableCell colSpan={1}>
-                  <ActionComponents tasklet={tasklet} />
+                  {dayFormatter(tasklet.targetdate)}
+                </TableCell>
+                <TableCell colSpan={1}>
+                  <ActionComponents
+                    tasklet={tasklet}
+                    userName={userName}
+                    todoList={todoList}
+                    toggleModal={toggleModal}
+                    modal={modal}
+                  />
                 </TableCell>
               </TableRow>
             ))

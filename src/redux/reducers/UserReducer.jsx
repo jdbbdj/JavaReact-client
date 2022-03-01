@@ -36,6 +36,8 @@ const userReducers = (state = initialState, action) => {
       return { ...state, logs: action.payload };
     case "LOGS_DELETE":
       return { ...state };
+    case "LOGS_UPDATE":
+      return { ...state, logs: action.payload };
 
     default:
       return state;

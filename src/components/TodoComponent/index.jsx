@@ -18,6 +18,8 @@ const TodoComponent = () => {
     generate: false,
     deleteReport: false,
     processing: false,
+    edit: false,
+    modalData: [],
   });
 
   const handleOpen = () => {};
@@ -63,7 +65,7 @@ const TodoComponent = () => {
 
   console.log(modal);
 
-  const { generate, deleteReport, processing } = modal;
+  const { generate, deleteReport, processing, modalData, edit } = modal;
 
   return (
     <div>
@@ -72,6 +74,8 @@ const TodoComponent = () => {
           handleGenerate={handleOpenModal}
           userName={userName}
           todoList={todoList}
+          toggleModal={toggleModal}
+          modal={modal}
         />
         <Modal
           open={generate}
@@ -79,7 +83,12 @@ const TodoComponent = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <TodoListForm open={generate} />
+          <TodoListForm
+            open={generate}
+            edit={edit}
+            modalData={modalData}
+            toggleModal={toggleModal}
+          />
         </Modal>
       </div>
     </div>
