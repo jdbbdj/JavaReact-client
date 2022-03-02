@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import { dateFormatter } from "../../utils/helper";
 import { useSelector } from "react-redux";
+import DescriptionIcon from "@material-ui/icons/Description";
+import DoneAllIcon from "@material-ui/icons/DoneAll";
+import WorkIcon from "@material-ui/icons/Work";
+import TodayIcon from "@material-ui/icons/Today";
+import moment from "moment";
 import { userLogsSelector } from "../../redux/selectors/UserSelector";
 import {
   CustomDialog,
@@ -12,23 +17,45 @@ import {
 } from "./styles";
 import todoValidator from "./todoValidator";
 import { useDispatch } from "react-redux";
-import { logsUpdate } from "../../redux/actions/UserActions";
-const TodoListForm = ({ open, edit, modalData, toggleModal }) => {
+import { logsAppend, logsUpdate } from "../../redux/actions/UserActions";
+const TodoListForm = ({ open, edit, modalData, toggleModal, view }) => {
   const dispatch = useDispatch();
-  const logs = useSelector(userLogsSelector());
+  const user = useSelector((state) => state.userReducers.name);
   const [initialValues, setInitialValues] = useState(
-    edit ? modalData : { description: "hotdog", targetdate: "" }
+    edit ? modalData : { description: "", targetdate: "" }
   );
   const modalSubmit = (values) => {
-    let newLogs;
+    // logs.map((item) =>
+    //   item.id === values.id
+    //     ? (newLogs = logs.filter((item) => item.id != values.id))
+    //     : console.log("YES")
+    // );
+    // finalLogs = [...newLogs, values];
+
+    //dispatch(logsUpdate(finalLogs));
+    const javaDate = moment(values.targetdate).format();
     let finalLogs;
-    logs.map((item) =>
-      item.id === values.id
-        ? (newLogs = logs.filter((item) => item.id != values.id))
-        : console.log("YES")
-    );
-    finalLogs = [...newLogs, values];
-    dispatch(logsUpdate(finalLogs));
+    if (initialValues.id) {
+      finalLogs = {
+        ...values,
+        id: initialValues.id,
+        username: user,
+        targetdate: javaDate,
+        done: false,
+      };
+      dispatch(logsUpdate(user, finalLogs));
+    } else {
+      finalLogs = {
+        ...values,
+        id: initialValues.id,
+        username: user,
+        targetdate: javaDate,
+        done: false,
+      };
+      dispatch(logsAppend(user, finalLogs));
+    }
+
+    handleClose();
   };
   const formik = useFormik({
     initialValues: initialValues,
@@ -41,24 +68,10 @@ const TodoListForm = ({ open, edit, modalData, toggleModal }) => {
     toggleModal("modalData", []);
     toggleModal("edit", false);
     toggleModal("generate", false);
+    toggleModal("view", false);
   };
 
-  const {
-    values,
-    setFieldValue,
-    handleSubmit,
-    handleChange,
-    errors,
-    touched,
-    getFieldProps,
-  } = formik;
-
-  const handleOnChange = (event, id) => {
-    setInitialValues((prev) => ({
-      ...prev,
-      [id]: event.target.value,
-    }));
-  };
+  const { values, handleSubmit, handleChange } = formik;
   return (
     <CustomDialog open={open}>
       <h1
@@ -67,33 +80,51 @@ const TodoListForm = ({ open, edit, modalData, toggleModal }) => {
       >
         X
       </h1>
-      <CustomContainer>
-        <form className="loginForm" onSubmit={handleSubmit}>
-          <CustomGrid>
-            <label>Description</label>
-            <CustomTextField
-              type="text"
-              name="description"
-              value={values.description}
-              onChange={handleChange}
-            />
-          </CustomGrid>
+      {!view ? (
+        <CustomContainer>
+          <form className="loginForm" onSubmit={handleSubmit}>
+            <CustomGrid>
+              <label>Description</label>
+              <CustomTextField
+                type="text"
+                name="description"
+                value={values.description}
+                onChange={handleChange}
+              />
+            </CustomGrid>
 
-          <CustomGrid>
-            <label>Password</label>
-            <CustomTextField
-              type="date"
-              value={dateFormatter(values.targetdate)}
-              name="targetdate"
-              onChange={handleChange}
-            />
-          </CustomGrid>
+            <CustomGrid>
+              <label>Password</label>
+              <CustomTextField
+                type="date"
+                value={dateFormatter(values.targetdate)}
+                name="targetdate"
+                onChange={handleChange}
+              />
+            </CustomGrid>
 
+            <CustomGrid>
+              <CustomButton type="submit">Submit</CustomButton>
+            </CustomGrid>
+          </form>
+        </CustomContainer>
+      ) : (
+        <CustomContainer>
           <CustomGrid>
-            <CustomButton type="submit">Submit</CustomButton>
+            <CustomGrid>
+              <DescriptionIcon />
+              {modalData.description}
+            </CustomGrid>
+            <CustomGrid>
+              <TodayIcon />
+              {modalData.targetdate}
+            </CustomGrid>
+            <CustomGrid>
+              {modalData.done ? <DoneAllIcon /> : <WorkIcon />}
+            </CustomGrid>
           </CustomGrid>
-        </form>
-      </CustomContainer>
+        </CustomContainer>
+      )}
     </CustomDialog>
   );
 };

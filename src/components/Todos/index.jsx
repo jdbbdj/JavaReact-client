@@ -10,7 +10,15 @@ import {
 import ActionComponents from "../ActionComponents";
 import { dateFormatter, dayFormatter } from "../../utils/helper";
 
-const Todos = ({ handleGenerate, todoList, userName, toggleModal, modal }) => {
+const Todos = ({
+  handleGenerate,
+  todoList,
+  userName,
+  toggleModal,
+  modal,
+  viewLogs,
+  handleView,
+}) => {
   const { generate, deleteReport, processing, edit } = modal;
 
   return (
@@ -62,6 +70,8 @@ const Todos = ({ handleGenerate, todoList, userName, toggleModal, modal }) => {
                     todoList={todoList}
                     toggleModal={toggleModal}
                     modal={modal}
+                    viewLogs={viewLogs}
+                    handleView={handleView}
                   />
                 </TableCell>
               </TableRow>

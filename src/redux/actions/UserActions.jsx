@@ -48,14 +48,38 @@ export const logDelete = (userEndpoint, logId) => async (dispatch) => {
   }
 };
 
-export const logsUpdate = (logs) => async (dispatch) => {
+export const logsView = (userEndpoint, logId) => async (dispatch) => {
+  await APICall(
+    dispatch,
+    axios.get(`${BASE_URL}/home/${userEndpoint}/${logId}`),
+    "LOGS_VIEW"
+  );
+};
+
+export const logsAppend = (userEndpoint, logs) => async (dispatch) => {
   try {
-    dispatch({
-      type: "LOGS_UPDATE",
-      payload: logs,
-    });
+    await APICall(
+      dispatch,
+      axios.post(`${BASE_URL}/home/${userEndpoint}/generate`, logs),
+      "LOGS_APPEND"
+    );
+    dispatch(fetchUsername(userEndpoint));
+    dispatch(snackBarSuccessShowCall("Add Successfully"));
+  } catch (err) {
+    dispatch(snackBarFailShowCall(err));
+  }
+};
+
+export const logsUpdate = (userEndpoint, logs) => async (dispatch) => {
+  try {
+    await APICall(
+      dispatch,
+      axios.put(`${BASE_URL}/home/${userEndpoint}/${logs.id}`, logs),
+      "LOGS_UPDATE"
+    );
+    dispatch(fetchUsername(userEndpoint));
     dispatch(snackBarSuccessShowCall("Update Successfully"));
-  } catch (e) {
-    dispatch(snackBarFailShowCall(e));
+  } catch (err) {
+    dispatch(snackBarFailShowCall(err));
   }
 };

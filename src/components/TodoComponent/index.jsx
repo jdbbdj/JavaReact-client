@@ -11,13 +11,15 @@ const TodoComponent = () => {
   const dispatch = useDispatch();
   const logs = useSelector(userLogsSelector());
   const userName = useSelector((state) => state.userReducers.name);
-  const modalStatus = useSelector((state) => state.modalReducer.open);
+
+  const viewData = useSelector((state) => state.userReducers.logsdata);
+  const [viewLogs, setViewLogs] = useState(viewData);
   const [todoList, setTodoList] = useState([]);
-  const [isOpen, setIsOpen] = useState(modalStatus);
   const [modal, setModal] = useState({
     generate: false,
     deleteReport: false,
     processing: false,
+    view: false,
     edit: false,
     modalData: [],
   });
@@ -61,11 +63,16 @@ const TodoComponent = () => {
 
   useEffect(() => {
     setTodoList(logs);
-  }, [logs]);
+    setViewLogs(viewData);
+  }, [logs, viewData]);
 
-  console.log(modal);
-
-  const { generate, deleteReport, processing, modalData, edit } = modal;
+  const { generate, deleteReport, processing, modalData, edit, view } = modal;
+  const handleView = () => {
+    toggleModal("generate", true);
+    toggleModal("view", true);
+    toggleModal("edit", false);
+    toggleModal("modalData", viewLogs);
+  };
 
   return (
     <div>
@@ -76,6 +83,8 @@ const TodoComponent = () => {
           todoList={todoList}
           toggleModal={toggleModal}
           modal={modal}
+          viewLogs={viewLogs}
+          handleView={handleView}
         />
         <Modal
           open={generate}
@@ -88,6 +97,7 @@ const TodoComponent = () => {
             edit={edit}
             modalData={modalData}
             toggleModal={toggleModal}
+            view={view}
           />
         </Modal>
       </div>
